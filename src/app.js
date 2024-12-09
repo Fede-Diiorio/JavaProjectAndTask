@@ -1,13 +1,12 @@
 import express from "express";
 import path from "path";
-import router from "./routes/fight.router";
+import router from "./routes/fight.router.js";
 
 const app = express();
 
 // Permitir envío de información mediante formularios y JSON
 app.use(express.urlencoded({ extended: true })); // Middleware para parsear datos de formularios
 app.use(express.json()); // Middleware para parsear datos JSON
-app.use(express.static(path.join(__dirname, '../public')));
 
 // Rutas
 app.use("/api/fight", router);

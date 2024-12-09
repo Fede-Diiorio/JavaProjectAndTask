@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Controller from "../controllers/fight.controller";
+import Controller from "../controllers/fight.controller.js";
 
 const router = Router();
 

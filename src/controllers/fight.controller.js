@@ -1,4 +1,4 @@
-import FightService from "../services/fight.service";
+import FightService from "../services/fight.service.js";
 
 export default class Controller {
 

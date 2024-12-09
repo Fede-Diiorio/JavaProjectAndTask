@@ -1,4 +1,14 @@
 {
+  "name": "backend_preentrega1_di-iorio",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx mocha test --recursive",
+    "start": "node src/app",
+    "dev": "nodemon src/app"
+  },
   "dependencies": {
     "express": "^4.21.2"
   }
