@@ -1,48 +1,49 @@
 export default class FightService {
+    #coordinates;
 
-    #generateRandomCoordinates() {
-        const width = Math.floor(Math.random() * 100);
-        const height = Math.floor(Math.random() * 100);
-        const deep = Math.floor(Math.random() * 100);
-
-        console.log("WIDTH: " + width);
-        console.log("HEIGHT: " + height);
-        console.log("DEEP: " + deep);
-
-        return { width, height, deep }
+    constructor() {
+        this.#coordinates = null; // Inicialmente sin coordenadas
     }
 
-    #validateCoodinate(coordinate) {
-        if (coordinate < 0 || coordinate > 99) {
-            throw new Error("Coordenada debe estar entre 0 y 99");
-        }
+    generateRandomCoordinates() {
+        this.#coordinates = {
+            width: Math.floor(Math.random() * 100),
+            height: Math.floor(Math.random() * 100),
+            deep: Math.floor(Math.random() * 100),
+        };
 
-        return coordinate;
+        console.log("Coordenadas generadas:", this.#coordinates);
+        return this.#coordinates;
+    }
+
+    getCoordinates() {
+        if (!this.#coordinates) {
+            throw new Error("Las coordenadas no han sido generadas aún.");
+        }
+        return this.#coordinates;
+    }
+
+    #validateCoordinate(coordinate) {
+        if (coordinate < 0 || coordinate > 99) {
+            throw new Error(`Coordenada ${coordinate} debe estar dentro del rango de 0 y 99`);
+        }
     }
 
     calculateCoordinates(width, height, deep) {
-
-        const couter = 1;
-
-        this.#validateCoodinate(width);
-        this.#validateCoodinate(height);
-        this.#validateCoodinate(deep);
-
-        const coordinates = this.#generateRandomCoordinates;
-
-        while (couter <= 7) {
-
-            if (width == coordinates.width && height == coordinates.height && deep == coordinates.deep) {
-                return "¡VICTORIA, ALCANZAMOS LA VICTORIA!"
-            }
-
-
-
-
-            couter++;
+        if (!this.#coordinates) {
+            throw new Error("Debe generar las coordenadas primero.");
         }
 
-        return "Has perdido";
+        this.#validateCoordinate(width);
+        this.#validateCoordinate(height);
+        this.#validateCoordinate(deep);
 
+        const { width: targetWidth, height: targetHeight, deep: targetDeep } = this.#coordinates;
+
+        if (width === targetWidth && height === targetHeight && deep === targetDeep) {
+            return "¡VICTORIA, ALCANZAMOS LA VICTORIA!";
+        }
+
+        return "Intento fallido. Sigue intentando.";
     }
 }
