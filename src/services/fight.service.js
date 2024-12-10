@@ -62,9 +62,13 @@ export default class FightService {
         this.#counter--;
 
         if (this.#counter < 1) {
+            const response = {
+                coordinates: this.#coordinates,
+                message: "Te has quedado sin disparos. Estás muerto."
+            }
             this.#counter = null;
             this.#coordinates = null;
-            return "Te has quedado sin disparos. Estás muerto."
+            return response;
         }
 
         const response = {
