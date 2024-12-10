@@ -16,8 +16,6 @@ export default class FightService {
 
         this.#counter = 7;
 
-        console.log("Coordenadas generadas:", this.#coordinates);
-        console.log("Contador:", this.#counter);
         return this.#coordinates;
     }
 
@@ -31,6 +29,16 @@ export default class FightService {
     #validateCoordinate(coordinate) {
         if (coordinate < 0 || coordinate > 99) {
             throw new Error(`Coordenada ${coordinate} debe estar dentro del rango de 0 y 99`);
+        }
+    }
+
+    #generateResponse(coordinate, constructorOption) {
+        if (coordinate < constructorOption) {
+            return `${coordinate} está por debajo de la coordenada.`;
+        } else if (coordinate > constructorOption) {
+            return `${coordinate} está por encima de la coordenada.`;
+        } else {
+            return `${coordinate} es correcto.`;
         }
     }
 
@@ -59,8 +67,13 @@ export default class FightService {
             return "Te has quedado sin disparos. Estás muerto."
         }
 
+        const response = {
+            info: `Disparo fallido. Te quedan ${this.#counter} disparos`,
+            width: this.#generateResponse(width, this.#coordinates.width),
+            height: this.#generateResponse(height, this.#coordinates.height),
+            deep: this.#generateResponse(deep, this.#coordinates.deep)
+        }
 
-
-        return `Disparo fallido. Te quedan ${this.#counter} disparos`;
+        return response;
     }
 }
