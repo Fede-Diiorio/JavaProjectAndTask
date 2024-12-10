@@ -1,8 +1,10 @@
 export default class FightService {
     #coordinates;
+    #counter;
 
     constructor() {
         this.#coordinates = null; // Inicialmente sin coordenadas
+        this.#counter = null;
     }
 
     generateRandomCoordinates() {
@@ -12,7 +14,10 @@ export default class FightService {
             deep: Math.floor(Math.random() * 100),
         };
 
+        this.#counter = 7;
+
         console.log("Coordenadas generadas:", this.#coordinates);
+        console.log("Contador:", this.#counter);
         return this.#coordinates;
     }
 
@@ -41,9 +46,21 @@ export default class FightService {
         const { width: targetWidth, height: targetHeight, deep: targetDeep } = this.#coordinates;
 
         if (width === targetWidth && height === targetHeight && deep === targetDeep) {
+            this.#counter = null;
+            this.#coordinates = null;
             return "¡VICTORIA, ALCANZAMOS LA VICTORIA!";
         }
 
-        return "Intento fallido. Sigue intentando.";
+        this.#counter--;
+
+        if (this.#counter < 1) {
+            this.#counter = null;
+            this.#coordinates = null;
+            return "Te has quedado sin disparos. Estás muerto."
+        }
+
+
+
+        return `Disparo fallido. Te quedan ${this.#counter} disparos`;
     }
 }
