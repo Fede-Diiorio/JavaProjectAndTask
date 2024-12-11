@@ -34,9 +34,9 @@ export default class FightService {
 
     #generateResponse(coordinate, constructorOption) {
         if (coordinate < constructorOption) {
-            return `${coordinate} está por debajo de la coordenada.`;
+            return `${coordinate} es más pequeño que la coordenada. Ingrese un número mayor.`;
         } else if (coordinate > constructorOption) {
-            return `${coordinate} está por encima de la coordenada.`;
+            return `${coordinate} es más grande que la coordenada. Ingrese un número menor.`;
         } else {
             return `${coordinate} es correcto.`;
         }
