@@ -5,9 +5,18 @@ export default class FightService {
     constructor() {
         this.#coordinates = null; // Inicialmente sin coordenadas
         this.#counter = null;
+
+        // Rango inicial para cada dimensión
+        this.min = { width: 0, height: 0, deep: 0 };
+        this.max = { width: 99, height: 99, deep: 99 };
+
+        // Historial de intentos
+        this.history = { width: [], height: [], deep: [] };
     }
 
     generateRandomCoordinates() {
+        this.#reset();
+
         this.#coordinates = {
             width: Math.floor(Math.random() * 100),
             height: Math.floor(Math.random() * 100),
@@ -32,14 +41,44 @@ export default class FightService {
         }
     }
 
-    #generateResponse(coordinate, constructorOption) {
-        if (coordinate < constructorOption) {
-            return `${coordinate} es más pequeño que la coordenada. Ingrese un número mayor.`;
-        } else if (coordinate > constructorOption) {
-            return `${coordinate} es más grande que la coordenada. Ingrese un número menor.`;
+    #getRange(dimension) {
+        return `${this.min[dimension]} < número < ${this.max[dimension]}`;
+    }
+
+    /**
+     * Actualiza los límites del rango para una dimensión específica.
+     * @param {string} dimension - La dimensión ('width', 'height' o 'deep').
+     * @param {number} number - El número ingresado.
+     */
+    #updateRange(dimension, number) {
+        this.#validateCoordinate(number);
+
+        this.history[dimension].push(number); // Persistir en memoria para esta dimensión
+
+        // Ajustar los límites
+        if (number < this.#coordinates[dimension]) {
+            this.min[dimension] = number; // Actualizar límite inferior
+        } else {
+            this.max[dimension] = number; // Actualizar límite superior
+        }
+
+        return this.#getRange(dimension);
+    }
+
+    #generateResponse(coordinate, constructorOption, dimension) {
+        if (coordinate != constructorOption) {
+            return this.#updateRange(dimension, coordinate);
         } else {
             return `${coordinate} es correcto.`;
         }
+    }
+
+    #reset() {
+        this.min = { width: 0, height: 0, deep: 0 };
+        this.max = { width: 99, height: 99, deep: 99 };
+        this.history = { width: [], height: [], deep: [] };
+        this.#counter = null;
+        this.#coordinates = null;
     }
 
     calculateCoordinates(width, height, deep) {
@@ -65,18 +104,19 @@ export default class FightService {
             const response = {
                 coordinates: this.#coordinates,
                 message: "Te has quedado sin disparos. Estás muerto."
-            }
-            this.#counter = null;
-            this.#coordinates = null;
+            };
+
+            this.#reset();
+
             return response;
         }
 
         const response = {
             info: `Disparo fallido. Te quedan ${this.#counter} disparos`,
-            width: this.#generateResponse(width, this.#coordinates.width),
-            height: this.#generateResponse(height, this.#coordinates.height),
-            deep: this.#generateResponse(deep, this.#coordinates.deep)
-        }
+            width: this.#generateResponse(width, targetWidth, "width"),
+            height: this.#generateResponse(height, targetHeight, "height"),
+            deep: this.#generateResponse(deep, targetDeep, "deep")
+        };
 
         return response;
     }
