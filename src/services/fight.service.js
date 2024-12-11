@@ -53,13 +53,13 @@ export default class FightService {
     #updateRange(dimension, number) {
         this.#validateCoordinate(number);
 
-        this.history[dimension].push(number); // Persistir en memoria para esta dimensión
+        this.history[dimension].push(number);
 
         // Ajustar los límites
         if (number < this.#coordinates[dimension]) {
-            this.min[dimension] = number; // Actualizar límite inferior
+            this.min[dimension] = number;
         } else {
-            this.max[dimension] = number; // Actualizar límite superior
+            this.max[dimension] = number;
         }
 
         return this.#getRange(dimension);
