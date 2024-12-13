@@ -1,8 +1,11 @@
 import express from "express";
-import path from "path";
 import router from "./routes/fight.router.js";
+import cors from 'cors';
 
 const app = express();
+
+// Configuración básica para permitir solicitudes desde cualquier origen
+app.use(cors());
 
 // Permitir envío de información mediante formularios y JSON
 app.use(express.urlencoded({ extended: true })); // Middleware para parsear datos de formularios
